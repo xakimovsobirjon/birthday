@@ -134,6 +134,27 @@
         max-height: 80vw;
       }
     }
+    #flower-rain {
+      pointer-events: none;
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      z-index: 10;
+      overflow: visible;
+    }
+    .flower {
+      position: absolute;
+      top: -40px;
+      font-size: 1.5rem;
+      opacity: 0.85;
+      animation: flower-fall linear forwards;
+    }
+    @keyframes flower-fall {
+      to {
+        transform: translateY(520px) rotate(360deg) scale(1.1);
+        opacity: 0.7;
+      }
+    }
   </style>
 </head>
 <body>
@@ -152,13 +173,38 @@
           <div class="name">Aisyah</div>
         </div>
       </div>
+      <div id="flower-rain"></div>
     </div>
   </div>
   <script>
     const book = document.getElementById('book');
     const cover = document.getElementById('cover');
+    const flowerRain = document.getElementById('flower-rain');
+    const flowerEmojis = ['🌸','🌺','🌻','🌼','💐','🌷','🥀','🌹'];
+
+    function startFlowerRain() {
+      let count = 0;
+      const interval = setInterval(() => {
+        if (!book.classList.contains('open') || count > 30) {
+          clearInterval(interval);
+          setTimeout(() => flowerRain.innerHTML = '', 2000);
+          return;
+        }
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        flower.innerText = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+        flower.style.left = Math.random() * 90 + '%';
+        flower.style.fontSize = (Math.random() * 1.2 + 1.2) + 'rem';
+        flower.style.animationDuration = (Math.random() * 1.2 + 1.8) + 's';
+        flowerRain.appendChild(flower);
+        setTimeout(() => flower.remove(), 3000);
+        count++;
+      }, 120);
+    }
+
     cover.addEventListener('click', function() {
       book.classList.add('open');
+      startFlowerRain();
     });
     // Optional: close on click outside
     document.body.addEventListener('click', function(e) {
