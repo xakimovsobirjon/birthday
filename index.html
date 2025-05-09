@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Dear Teacher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(120deg, #f8fafc 0%, #ffe6fa 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .book-container {
+      perspective: 1600px;
+      width: 700px;
+      height: 450px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .book {
+      width: 700px;
+      height: 450px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cover-left, .cover-right, .page-left, .page-right {
+      position: absolute;
+      width: 350px;
+      height: 450px;
+      top: 0;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      backface-visibility: hidden;
+      transition: transform 1.1s cubic-bezier(.4,2,.6,1);
+      z-index: 2;
+    }
+    .cover-left {
+      left: 0;
+      background: linear-gradient(135deg, #ffb347 60%, #ffcc80 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 4;
+      border-right: 2px solid #fffbe6;
+      box-shadow: 0 8px 32px rgba(255,179,71,0.18);
+    }
+    .cover-left .icon {
+      font-size: 3.5rem;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 2px 4px #0002);
+    }
+    .cover-left .cover-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 2px 8px #ffb34755;
+    }
+    .cover-left .cover-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fffbe6;
+      text-shadow: 0 2px 8px #ffb34733;
+    }
+    .cover-right {
+      right: 0;
+      background: linear-gradient(-135deg, #ffb347 60%, #ffcc80 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 4;
+      border-left: 2px solid #fffbe6;
+      box-shadow: 0 8px 32px rgba(255,179,71,0.18);
+      transform: rotateY(0deg);
+    }
+    .page-left, .page-right {
+      background: #fffbe6;
+      color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      padding: 30px;
+      box-sizing: border-box;
+      z-index: 3;
+      border-radius: 0 0 0 16px;
+    }
+    .page-left {
+      left: 0;
+      transform: rotateY(0deg);
+      border-right: 1px solid #ffe6fa;
+    }
+    .page-right {
+      right: 0;
+      transform: rotateY(0deg);
+      border-left: 1px solid #ffe6fa;
+    }
+    .book.open .cover-left {
+      transform: rotateY(-120deg);
+      z-index: 1;
+    }
+    .book.open .cover-right {
+      transform: rotateY(120deg);
+      z-index: 1;
+    }
+    .book.open .page-left {
+      transform: rotateY(-90deg);
+      z-index: 2;
+    }
+    .book.open .page-right {
+      transform: rotateY(90deg);
+      z-index: 2;
+    }
+    .center-content {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 500px;
+      background: linear-gradient(120deg, #fffbe6 80%, #ffe6fa 100%);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(255,179,71,0.10);
+      padding: 48px 32px 36px 32px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.7s 0.7s, transform 0.7s 0.7s;
+      z-index: 10;
+      pointer-events: none;
+      border: 2px solid #ffb34744;
+    }
+    .book.open .center-content {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: auto;
+    }
+    .center-content h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.3rem;
+      color: #ff9800;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #ffb34733;
+    }
+    .center-content .congrats {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      color: #a86d32;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .center-content .from {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .center-content .name {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: #ff9800;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .close-btn {
+      display: none;
+      position: absolute;
+      top: 24px;
+      right: 38px;
+      background: #ffb347;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 2px 8px #ffb34733;
+      transition: background 0.2s;
+    }
+    .book.open .close-btn {
+      display: block;
+    }
+    .close-btn:hover {
+      background: #ff9800;
+    }
+    @media (max-width: 800px) {
+      .book-container, .book {
+        width: 98vw;
+        height: 60vw;
+        min-width: 320px;
+        min-height: 220px;
+        max-width: 99vw;
+        max-height: 70vw;
+      }
+      .cover-left, .cover-right, .page-left, .page-right {
+        width: 49vw;
+        height: 60vw;
+        min-width: 160px;
+        min-height: 220px;
+        max-width: 49vw;
+        max-height: 60vw;
+      }
+      .center-content {
+        width: 70vw;
+        min-width: 180px;
+        max-width: 90vw;
+        padding: 18px 6vw 18px 6vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="book-container">
+    <div class="book" id="book">
+      <button class="close-btn" id="closeBtn" title="Close">×</button>
+      <div class="cover-left" id="coverLeft">
+        <span class="icon">🎂</span>
+        <div class="cover-title">Happy Birthday</div>
+        <div class="cover-sub">Dear Teacher</div>
+      </div>
+      <div class="cover-right" id="coverRight"></div>
+      <div class="page-left"></div>
+      <div class="page-right"></div>
+      <div class="center-content" id="centerContent">
+        <h2>Congratulations</h2>
+        <div class="congrats">on your achievement !</div>
+        <div class="from">Your best student</div>
+        <div class="name">Aisyah</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const book = document.getElementById('book');
+    const closeBtn = document.getElementById('closeBtn');
+    const coverLeft = document.getElementById('coverLeft');
+    const coverRight = document.getElementById('coverRight');
+
+    // Kitob ochish
+    coverLeft.addEventListener('click', function() {
+      book.classList.add('open');
+    });
+    coverRight.addEventListener('click', function() {
+      book.classList.add('open');
+    });
+    // Yopish tugmasi
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      book.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
